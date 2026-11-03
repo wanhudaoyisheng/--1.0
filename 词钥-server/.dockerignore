@@ -1,0 +1,11 @@
+node_modules
+var
+.git
+.env
+.env.*
+!.env.example
+*.log
+*.db
+*.db-shm
+*.db-wal
+test

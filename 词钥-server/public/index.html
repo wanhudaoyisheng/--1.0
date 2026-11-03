@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="void">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>词钥 · 每一个字都是一把钥匙</title>
+<meta name="description" content="词钥——文字探索式推理。从人物的原话里点出可疑的字，连向对的人或世界设定，一块块拼出真相。" />
+<script>
+  /* 分享链接形如 /?sharecode=xxx，托管代理要求**每个请求**都带这个参数，
+     否则连 css/js 都会 403。这里在解析阶段把参数补进资源地址。 */
+  (function () {
+    var code = new URLSearchParams(location.search).get("sharecode");
+    var q = code ? "?sharecode=" + encodeURIComponent(code) : "";
+    window.CIYUE_SHARE_QUERY = q;
+    document.write('<link rel="stylesheet" href="style.css' + q + '" />');
+  })();
+</script>
+</head>
+<body>
+<div id="boot-cover"></div>
+
+<!-- ============ 迷幻背景层（全站固定） ============ -->
+<canvas id="aurora" aria-hidden="true"></canvas>
+<div id="grain" aria-hidden="true"></div>
+<div id="vignette" aria-hidden="true"></div>
+
+<!-- ============ 进入页 ============ -->
+<section id="landing">
+  <div class="landing-glow" aria-hidden="true"></div>
+
+  <svg class="keyhole" viewBox="0 0 120 168" aria-hidden="true">
+    <defs>
+      <linearGradient id="kh" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="currentColor" stop-opacity=".9" />
+        <stop offset="100%" stop-color="currentColor" stop-opacity=".1" />
+      </linearGradient>
+    </defs>
+    <path d="M60 8a38 38 0 0 1 22 68.6L95 158H25l13-81.4A38 38 0 0 1 60 8Z"
+          fill="none" stroke="url(#kh)" stroke-width="2.4" />
+    <circle cx="60" cy="46" r="15" fill="none" stroke="url(#kh)" stroke-width="2" />
+  </svg>
+
+  <div class="landing-content">
+    <div class="eyebrow"><span class="dot"></span>文字探索式推理 · WORD KEY</div>
+
+    <h1 class="title" aria-label="词钥">
+      <span>词</span><span>钥</span>
+    </h1>
+    <div class="title-rule"><i></i></div>
+
+    <p class="tagline">每一个字，都是一把钥匙</p>
+    <p class="desc">
+      <span class="d-line">三个陌生人，几句没头没尾的话。</span>
+      <span class="d-line">从他们的原话里点出可疑的字，</span>
+      <span class="d-line">连向对的人，或某个你还没见过的世界设定——</span>
+      <span class="d-line">真相会一块一块浮出来。</span>
+    </p>
+
+    <div class="landing-actions">
+      <button id="btn-enter" class="cta">
+        <span>开始探索</span>
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+      <button id="btn-rules" class="ghost">玩法说明</button>
+    </div>
+
+    <div class="themes-wrap">
+      <div class="themes-label">配 色 主 题</div>
+      <div id="landing-themes" class="theme-picker"></div>
+    </div>
+  </div>
+
+  <div class="scroll-hint" aria-hidden="true">
+    <span>下滑进入</span>
+    <i></i>
+  </div>
+</section>
+
+<!-- ============ 游戏主页 ============ -->
+<main id="game">
+  <div id="app">
+    <header id="topbar">
+      <div class="brand">词钥 <span class="brand-sub">文字探索式推理</span></div>
+      <div class="brand-tag">点出可疑的字 · 连向对的人 · 拼出真相</div>
+      <div class="top-actions">
+        <div id="game-themes" class="theme-picker mini"></div>
+        <button id="btn-top-rules" class="icon-btn" title="玩法说明">玩法</button>
+        <button id="btn-top-home" class="icon-btn" title="回到封面">封面</button>
+      </div>
+    </header>
+
+    <!-- 向导对话区 -->
+    <section id="guide-area">
+      <div id="guide-avatar">向导</div>
+      <div id="guide-bubble"></div>
+    </section>
+
+    <!-- HUD：进度 + 里程碑 -->
+    <section id="hud">
+      <div id="progress-wrap">
+        <div id="progress-bar"><div id="progress-fill"></div></div>
+        <span id="progress-text">0/0 线索</span>
+      </div>
+      <div id="milestone-tray"></div>
+    </section>
+
+    <!-- 目标建议 -->
+    <section id="objective"></section>
+
+    <!-- 人物肖像画布 -->
+    <section id="canvas"></section>
+
+    <!-- 世界观收集栏 -->
+    <section id="world-panel"></section>
+
+    <footer id="page-foot">
+      词钥 · 判定由剧本图谱裁定，向导只负责演绎 —— 你看到的每一句线索都可溯源。
+    </footer>
+  </div>
+</main>
+
+<!-- 解锁连线覆盖层 -->
+<svg id="link-layer" aria-hidden="true"></svg>
+
+<!-- 浮动提示层 -->
+<div id="toast-layer" aria-live="polite"></div>
+
+<!-- 操作栏（仅游戏区可见） -->
+<section id="action-bar">
+  <div id="selection-preview">已选字：（空）</div>
+  <div id="target-chips"></div>
+  <div id="action-buttons">
+    <button id="btn-unlock" class="primary">解锁</button>
+    <button id="btn-hint">提示</button>
+    <button id="btn-clear">清空</button>
+    <button id="btn-replay">回放</button>
+    <button id="btn-restart">重开</button>
+  </div>
+</section>
+
+<!-- 回放弹窗 -->
+<div id="replay-modal" class="modal hidden"></div>
+<!-- 结局弹窗 -->
+<div id="ending-modal" class="modal hidden"></div>
+<!-- 玩法说明 -->
+<div id="rules-modal" class="modal hidden">
+  <div class="modal-box">
+    <h3>怎么玩</h3>
+    <ol class="rules-list">
+      <li><b>展开一个人的信息条。</b>点人物卡上的「展开信息条」，TA 说过的原话会逐字变成小方格。</li>
+      <li><b>点出可疑的字。</b>在原话里挑出你觉得不对劲的词，按原文顺序会自动拼成一个关键词。</li>
+      <li><b>选一个目标，按解锁。</b>把关键词指向某个人、或指向「世界观」——判定通过，就会翻出新的线索。</li>
+      <li><b>前置不足时会卡住。</b>字猜对了但情报不够，向导会告诉你先去别处挖，不是你想错了。</li>
+      <li><b>撬开世界观。</b>世界设定不足，故事推不动。看到像「设定」的词，试试指向世界观。</li>
+      <li><b>拼到终局。</b>里程碑点亮的那一刻，故事会自己说完。</li>
+    </ol>
+    <p class="rules-note">卡住了就点「提示」，提示分三级逐层递进，且不直接给答案。</p>
+    <button class="modal-close" onclick="closeModal('rules-modal')">知道了</button>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var q = window.CIYUE_SHARE_QUERY || "";
+    ["api.js", "app.js", "landing.js"].forEach(function (f) {
+      document.write('<script src="' + f + q + '"><\/script>');
+    });
+  })();
+</script>
+</body>
+</html>

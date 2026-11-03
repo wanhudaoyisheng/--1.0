@@ -1,0 +1,21 @@
+# 依赖与构建产物
+node_modules/
+dist/
+
+# 运行期数据：SQLite 文件属于本机状态，不进版本库
+词钥-server/var/
+*.db
+*.db-shm
+*.db-wal
+
+# 环境变量：只提交 .env.example
+.env
+.env.local
+.env.*.local
+
+# 工具与系统文件
+.workbuddy/
+.wbapp_*.genie
+.DS_Store
+Thumbs.db
+*.log

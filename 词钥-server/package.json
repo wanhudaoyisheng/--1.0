@@ -1,0 +1,26 @@
+{
+  "name": "ciyue-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "《词钥》API 服务 · 判定图谱写事实，向导只演绎",
+  "engines": {
+    "node": ">=22.6.0"
+  },
+  "scripts": {
+    "start": "node --experimental-sqlite --experimental-strip-types src/server.ts",
+    "dev": "node --experimental-sqlite --experimental-strip-types --watch src/server.ts",
+    "seed": "node --experimental-sqlite --experimental-strip-types scripts/seed.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "node --experimental-sqlite --experimental-strip-types --test test/judge.test.ts test/api.test.ts"
+  },
+  "dependencies": {
+    "@fastify/cors": "^11.4.0",
+    "@fastify/static": "^8.0.4",
+    "fastify": "^5.12.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.2"
+  }
+}
